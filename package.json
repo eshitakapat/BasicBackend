@@ -1,0 +1,15 @@
+{
+  "name": "basicbackend",
+  "version": "1.0.0",
+  "description": "a basic project management app for beginnners",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Basic",
+    "Backend"
+  ],
+  "author": "",
+  "license": "ISC"
+}
