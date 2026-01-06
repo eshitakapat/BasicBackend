@@ -12,5 +12,8 @@
     "Backend"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "3.7.4"
+  }
 }
