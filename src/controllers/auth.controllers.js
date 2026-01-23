@@ -10,9 +10,9 @@ const generateAccessAndRefreshTokens = async (userId) => {
         const accessToken = user.generateAccessToken()
         const refreshTken = user.generateRefreshToken()
 
-        user.refreshToken = refreshToken
+        user.refreshToken = refreshTken
         await user.save({validateBeforeSave: false})
-        return {acessToken , refreshToken}
+        return {accessToken , refreshTken}
     } catch (error) {
         throw new ApiError(500 , "Something went wrong")
     }
@@ -106,14 +106,14 @@ throw new ApiError(400 , "Password is invalid")
     return res
     .status(200)
     .cookie("accessToken" , accessToken , options)
-    .cookie("refreshToken" , refreshToken , options)
+    .cookie("refreshToken" , refreshTken , options)
     .json(
         new ApiResponse(
             200,
             {
                user: loggedInUser,
                accessToken,
-               refreshToken 
+               refreshTken 
             },
             "User logged In successfully"
         )
@@ -123,4 +123,31 @@ throw new ApiError(400 , "Password is invalid")
 
 })
 
-export { registeredUser , login };
+const logoutUser = asyncHandler(async(req , res) => {
+await User.findByIdAndUpdate(
+    req.user._id,
+    {
+        $set: {
+            refreshTken: "",
+        }
+    },
+    {
+        new: true,
+    }
+
+   
+)
+
+  const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+    .status(200)
+    .clearCookie("accessToken" , options)
+    .clearCookie("refreshTokn" , options)
+    .json(new ApiResponse(200 , {}, "User logged out"))
+})
+
+export { registeredUser , login , logoutUser};
